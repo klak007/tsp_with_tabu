@@ -4,11 +4,16 @@ import seaborn as sns
 
 # Load the data
 df = pd.read_csv('TSPdata.csv')
-print(df)
+
 # Group the data by parameters and calculate the mean
 df = df.drop(columns=['coordinates', 'best_route', 'Random/Known'])
 grouped = df.groupby(['max_iterations', 'tabu_size', 'num_cities']).mean().reset_index()
-
+# Show data
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', None)
+pd.set_option('display.max_colwidth', None)
+print(df)
+print(sum(df['execution_time']))
 # Plot the execution time for 10 cities, parameterized by max_iterations and tabu_size
 plt.figure(figsize=(10, 6))
 sns.lineplot(data=grouped[grouped['num_cities'] == 10], x='max_iterations', y='execution_time', hue='tabu_size')

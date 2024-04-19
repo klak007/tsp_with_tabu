@@ -3,9 +3,9 @@ import random
 import argparse
 import psutil
 import time
-from tabu_search import tabu_search, route_plot
-import matplotlib.pyplot as plt
 import pandas as pd
+
+from tabu_search import tabu_search, route_plot
 
 # Define command-line arguments
 parser = argparse.ArgumentParser(description='Run Tabu Search for TSP')
@@ -20,8 +20,6 @@ known_cities = [(60, 87), (13, 53), (66, 5), (38, 39), (79, 33), (38, 95), (73, 
                 (74, 21), (85, 67), (33, 11), (40, 14), (56, 30), (67, 26), (98, 37), (9, 49), (28, 97), (49, 54),
                 (70, 11), (24, 40), (87, 72), (63, 15), (45, 88), (33, 49), (13, 84), (98, 67), (52, 35), (80, 81)]
 
-#[(60, 87), (13, 53), (66, 5), (38, 39), (79, 33), (38, 95), (73, 40), (39, 18), (51, 39), (90, 57)]
-
 # Use command-line arguments to determine cities
 if args.random:
     num_cities = args.num_cities
@@ -35,7 +33,6 @@ num_cities_list = [10, 20, 50]
 max_iterations_list = [10, 100, 1000, 5000]
 tabu_size_list = [10, 50, 100, 200]
 
-
 # Check if the data file exists
 if os.path.exists('TSPdata.csv'):
     # If it exists, load it into a dataframe
@@ -45,10 +42,7 @@ else:
     df = pd.DataFrame(columns=['Random/Known', 'max_iterations', 'tabu_size', 'num_cities', 'coordinates',
                                'execution_time', 'memory_used', 'best_route', 'best_distance'])
 
-
-
-# best_overall_route = None
-# best_overall_distance = float('inf')
+# Loop through the parameters
 for num_cities in num_cities_list:
     cities = known_cities[:num_cities]
     for tabu_size in tabu_size_list:
@@ -57,7 +51,6 @@ for num_cities in num_cities_list:
             best_route, best_distance = tabu_search(cities, max_iterations, tabu_size)
             end_time = time.time()
             memory_usage = psutil.Process().memory_info().rss / 1024 / 1024  # Memory usage in MB
-
 
             # Create a DataFrame from the new row
             new_row = pd.DataFrame([{
@@ -76,9 +69,5 @@ for num_cities in num_cities_list:
             # Plot the best route
             route_plot(cities, best_route, max_iterations, tabu_size)
 
-
 # Save the dataframe to a CSV file
 df.to_csv('TSPdata.csv', index=False)
-
-#show the data
-print(df)
