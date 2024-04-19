@@ -1,0 +1,42 @@
+To solve the Traveling Salesman Problem (TSP) using the Tabu Search method and analyze the influence of parameters on solving time and memory usage, you can follow these steps:
+
+1. Implement the Tabu Search algorithm for TSP:
+   - Define the problem representation (e.g., a list of cities).
+   - Generate an initial solution (e.g., a random tour).
+   - Define the neighborhood structure (e.g., 2-opt moves).
+   - Set the tabu list size and other parameters.
+   - Implement the main loop of the Tabu Search algorithm:
+     - Generate neighboring solutions.
+     - Evaluate the objective function (tour length) for each neighbor.
+     - Select the best non-tabu neighbor or apply aspiration criteria.
+     - Update the current solution and tabu list.
+     - Repeat until a stopping criterion is met.
+
+2. Conduct experiments with different parameter settings:
+   - Identify the parameters you want to investigate (e.g., tabu list size, number of iterations, neighborhood size).
+   - Create a range of values for each parameter.
+   - Run the Tabu Search algorithm multiple times for each parameter combination.
+   - Measure the solving time and memory usage for each run.
+   - Store the results for analysis.
+
+3. Analyze the influence of parameters on solving time and memory usage:
+   - Plot the solving time and memory usage against each parameter.
+   - Observe how the solving time and memory usage change as the parameter values vary.
+   - Identify any trends or patterns in the results.
+   - Determine the optimal parameter settings based on the trade-off between solving time and solution quality.
+
+4. Compare the results with other methods:
+   - Implement or find implementations of other TSP solving methods (e.g., Genetic Algorithm, Ant Colony Optimization).
+   - Run experiments with the same problem instances and measure the solving time and solution quality.
+   - Compare the results of Tabu Search with the other methods.
+   - Analyze the strengths and weaknesses of each method.
+
+5. Document and present your findings:
+   - Write a report or create a presentation summarizing your research.
+   - Include the problem description, methodology, experimental setup, and results.
+   - Discuss the influence of parameters on solving time and memory usage.
+   - Present the comparison with other methods and highlight the advantages and limitations of Tabu Search.
+   - Provide conclusions and suggestions for future work.
+
+but now i want to check the time and memory used for number of cities and then plot this, so we have to make this into some loop
+i want to make a dataframe with all the parameters, so it begins with column: Random/Known, next column: max iterations, next column: tabu_size, next column: execution time, next column: memory used, next column: best route, next column: best distance. what else do you think would fit into this dataframe?
