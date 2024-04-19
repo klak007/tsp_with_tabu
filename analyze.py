@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import warnings
+warnings.filterwarnings("ignore")
 
 # Load the data
 df = pd.read_csv('TSPdata.csv')
@@ -13,104 +15,28 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 print(df)
-print(sum(df['execution_time']))
-# Plot the execution time for 10 cities, parameterized by max_iterations and tabu_size
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=grouped[grouped['num_cities'] == 10], x='max_iterations', y='execution_time', hue='tabu_size')
-plt.xscale('log')
-plt.xlabel('Max Iterations')
-plt.ylabel('Execution Time (s)')
-plt.legend(title='Tabu Size')
-plt.title('Execution Time for 10 Cities')
-plt.savefig('analyze_plots/execution_time_10.png')
-plt.show()
+print("Sumed execution time of the program in seconds: ", df['execution_time'].sum())
+# Define a function to plot data for different numbers of cities
+def plot_data(data_type, num_cities):
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(data=grouped[grouped['num_cities'] == num_cities], x='max_iterations', y=data_type, hue='tabu_size')
+    plt.xscale('log')
+    plt.xlabel('Max Iterations')
+    plt.ylabel(f'{data_type.replace("_", " ").title()} ({unit[data_type]})')
+    plt.legend(title='Tabu Size')
+    plt.title(f'{data_type.replace("_", " ").title()} for {num_cities} Cities')
+    plt.savefig(f'analyze_plots/{data_type}_{num_cities}.png')
+    plt.show()
 
-# Plot the execution time for 20 cities, parameterized by max_iterations and tabu_size
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=grouped[grouped['num_cities'] == 20], x='max_iterations', y='execution_time', hue='tabu_size')
-plt.xscale('log')
-plt.xlabel('Max Iterations')
-plt.ylabel('Execution Time (s)')
-plt.legend(title='Tabu Size')
-plt.title('Execution Time for 20 Cities')
-plt.savefig('analyze_plots/execution_time_20.png')
-plt.show()
+# Define units for each data type
+unit = {
+    'execution_time': 'Seconds',
+    'memory_used': 'MB',
+    'best_distance': 'Units'
+}
 
-# Plot the execution time for 50 cities, parameterized by max_iterations and tabu_size
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=grouped[grouped['num_cities'] == 50], x='max_iterations', y='execution_time', hue='tabu_size')
-plt.xscale('log')
-plt.xlabel('Max Iterations')
-plt.ylabel('Execution Time (s)')
-plt.legend(title='Tabu Size')
-plt.title('Execution Time for 50 Cities')
-plt.savefig('analyze_plots/execution_time_50.png')
-plt.show()
-
-# Plot the memory used for 10 cities, parameterized by max_iterations and tabu_size
-
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=grouped[grouped['num_cities'] == 10], x='max_iterations', y='memory_used', hue='tabu_size')
-plt.xscale('log')
-plt.xlabel('Max Iterations')
-plt.ylabel('Memory Used (MB)')
-plt.legend(title='Tabu Size')
-plt.title('Memory Used for 10 Cities')
-plt.savefig('analyze_plots/memory_used_10.png')
-plt.show()
-
-# Plot the memory used for 20 cities, parameterized by max_iterations and tabu_size
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=grouped[grouped['num_cities'] == 20], x='max_iterations', y='memory_used', hue='tabu_size')
-plt.xscale('log')
-plt.xlabel('Max Iterations')
-plt.ylabel('Memory Used (MB)')
-plt.legend(title='Tabu Size')
-plt.title('Memory Used for 20 Cities')
-plt.savefig('analyze_plots/memory_used_20.png')
-plt.show()
-
-# Plot the memory used for 50 cities, parameterized by max_iterations and tabu_size
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=grouped[grouped['num_cities'] == 50], x='max_iterations', y='memory_used', hue='tabu_size')
-plt.xscale('log')
-plt.xlabel('Max Iterations')
-plt.ylabel('Memory Used (MB)')
-plt.legend(title='Tabu Size')
-plt.title('Memory Used for 50 Cities')
-plt.savefig('analyze_plots/memory_used_50.png')
-plt.show()
-
-# Plot the best distance for 10 cities, parameterized by max_iterations and tabu_size
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=grouped[grouped['num_cities'] == 10], x='max_iterations', y='best_distance', hue='tabu_size')
-plt.xscale('log')
-plt.xlabel('Max Iterations')
-plt.ylabel('Best Distance')
-plt.legend(title='Tabu Size')
-plt.title('Best Distance for 10 Cities')
-plt.savefig('analyze_plots/best_distance_10.png')
-plt.show()
-
-# Plot the best distance for 20 cities, parameterized by max_iterations and tabu_size
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=grouped[grouped['num_cities'] == 20], x='max_iterations', y='best_distance', hue='tabu_size')
-plt.xscale('log')
-plt.xlabel('Max Iterations')
-plt.ylabel('Best Distance')
-plt.legend(title='Tabu Size')
-plt.title('Best Distance for 20 Cities')
-plt.savefig('analyze_plots/best_distance_20.png')
-plt.show()
-
-# Plot the best distance for 50 cities, parameterized by max_iterations and tabu_size
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=grouped[grouped['num_cities'] == 50], x='max_iterations', y='best_distance', hue='tabu_size')
-plt.xscale('log')
-plt.xlabel('Max Iterations')
-plt.ylabel('Best Distance')
-plt.legend(title='Tabu Size')
-plt.title('Best Distance for 50 Cities')
-plt.savefig('analyze_plots/best_distance_50.png')
-plt.show()
+# Plot data for different types and numbers of cities
+for data_type in ['execution_time', 'memory_used', 'best_distance']:
+    for num_cities in [10, 20, 50]:
+        plot_data(data_type, num_cities)
 
