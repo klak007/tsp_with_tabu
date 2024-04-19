@@ -80,7 +80,7 @@ def route_plot(cities, best_route, max_iterations, tabu_size):
 
     #title
     plt.title(f'Tabu Search: {len(cities)} cities, {max_iterations} iterations, {tabu_size} tabu size')
-    # Save the plot in the plots directory
-    plt.savefig(f'plots/tsp_plt_cit{len(cities)}_iter{max_iterations}_ts{tabu_size}.png')
+    # Save the plot in the route_plots directory
+    plt.savefig(f'route_plots/tsp_plt_cit{len(cities)}_iter{max_iterations}_ts{tabu_size}.png')
     # Display the plot
     plt.show()
