@@ -83,4 +83,4 @@ def route_plot(cities, best_route, max_iterations, tabu_size):
     # Save the plot in the route_plots directory
     plt.savefig(f'route_plots2/tsp_plt_cit{len(cities)}_iter{max_iterations}_ts{tabu_size}.png')
     # Display the plot
-    plt.show()
+    # plt.show()
