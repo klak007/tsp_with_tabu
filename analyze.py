@@ -14,6 +14,7 @@ grouped = df.groupby(['max_iterations', 'tabu_size', 'num_cities']).mean().reset
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
+pd.set_option('display.max_rows', None)
 print(df)
 print("Sumed execution time of the program in seconds: ", df['execution_time'].sum())
 # Define a function to plot data for different numbers of cities
@@ -25,7 +26,7 @@ def plot_data(data_type, num_cities):
     plt.ylabel(f'{data_type.replace("_", " ").title()} ({unit[data_type]})')
     plt.legend(title='Tabu Size')
     plt.title(f'{data_type.replace("_", " ").title()} for {num_cities} Cities')
-    plt.savefig(f'analyze_plots/{data_type}_{num_cities}.png')
+    plt.savefig(f'analyze_plots2/{data_type}_{num_cities}.png')
     plt.show()
 
 # Define units for each data type
