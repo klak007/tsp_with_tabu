@@ -7,14 +7,14 @@ import pandas as pd
 
 from tabu_search import tabu_search, route_plot
 
-# Define command-line arguments
+# parsers
 parser = argparse.ArgumentParser(description='Run Tabu Search for TSP')
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('--random', action='store_true', help='Use random cities')
 group.add_argument('--known', action='store_true', help='Use known cities')
 parser.add_argument('--num_cities', type=int, required=True, help='Number of cities')
 args = parser.parse_args()
-# Define known cities
+
 known_cities = [(60, 87), (13, 53), (66, 5), (38, 39), (79, 33), (38, 95), (73, 40), (39, 18), (51, 39), (90, 57),
                 (42, 88), (76, 24), (55, 72), (19, 65), (81, 10), (64, 51), (33, 73), (94, 3), (27, 82), (59, 60),
                 (31, 24), (90, 89), (15, 17), (71, 43), (8, 77), (46, 23), (20, 53), (61, 98), (2, 47), (16, 79),
@@ -31,42 +31,47 @@ elif args.known:
 else:
     raise ValueError('Either --random or --known must be specified')
 #num_cities_list = [10, 20, 50]  # Number of cities to test [5, 10, 15, 20, 30, 50]
-max_iterations_list = [5, 10, 50, 100, 200, 500, 1000, 5000]  # Number of iterations to test [5, 10, 50, 100, 200, 500, 1000, 5000]
-tabu_size_list = [10, 20, 40, 50, 80, 100, 200]  # Tabu size to test [10, 20, 40, 50, 80, 100, 200]
+max_iterations_list = [10, 100, 500, 1000, 3000]  # Number of iterations to test [5, 10, 50, 100, 200, 500, 1000, 5000]
+# tabu_size_list = [20, 50, 100]  # Tabu size to test [10, 20, 40, 50, 80, 100, 200]
 
-# Check if the data file exists
-if os.path.exists('TSPdata.csv'):
-    # If it exists, load it into a dataframe
-    df = pd.read_csv('TSPdata.csv')
+
+file = 'TSPdata6.csv'
+if os.path.exists(file):
+    df = pd.read_csv(file)
 else:
-    # If it doesn't exist, create a new dataframe
-    df = pd.DataFrame(columns=['Random/Known', 'max_iterations', 'tabu_size', 'num_cities', 'coordinates',
-                               'execution_time', 'memory_used', 'best_route', 'best_distance'])
+    df = pd.DataFrame(
+        columns=['Random/Known', 'max_iterations', 'min_tabu_size', 'max_tabu_size', 'num_cities', 'coordinates',
+                 'execution_time', 'memory_used', 'best_route', 'best_distance'])
 
 # Loop through the parameters
-for tabu_size in tabu_size_list:
-    for max_iterations in max_iterations_list:
-        start_time = time.time()
-        best_route, best_distance = tabu_search(cities, max_iterations, tabu_size)
-        end_time = time.time()
-        memory_usage = psutil.Process().memory_info().rss / 1024 / 1024  # Memory usage in MB
+min_tabu_size_list = [10, 20, 30, 50, 100]  # Minimum tabu size to test
+max_tabu_size_list = [50, 100, 150, 200, 300]  # Maximum tabu size to test
 
-        # Create a DataFrame from the new row
-        new_row = pd.DataFrame([{
-            'Random/Known': 'Random' if args.random else 'Known',
-            'max_iterations': max_iterations,
-            'tabu_size': tabu_size,
-            'num_cities': len(cities),
-            'coordinates': str(cities),
-            'execution_time': end_time - start_time,
-            'memory_used': memory_usage,
-            'best_route': str(best_route),
-            'best_distance': best_distance
-        }])
-        # Concatenate the new row DataFrame with the existing DataFrame
-        df = pd.concat([df, new_row], ignore_index=True)
-        # Plot the best route
-        route_plot(cities, best_route, max_iterations, tabu_size)
+# Loop through the parameters
+for min_tabu_size in min_tabu_size_list:
+    for max_tabu_size in max_tabu_size_list:
+        for max_iterations in max_iterations_list:
+            start_time = time.time()
+            best_route, best_distance = tabu_search(cities, max_iterations, min_tabu_size, max_tabu_size)
+            end_time = time.time()
+            memory_usage = psutil.Process().memory_info().rss / 1024 / 1024  # Memory usage in MB
 
-# Save the dataframe to a CSV file
-df.to_csv('TSPdata.csv', index=False)
+            # Create a DataFrame from the new row
+            new_row = pd.DataFrame([{
+                'Random/Known': 'Random' if args.random else 'Known',
+                'max_iterations': max_iterations,
+                'min_tabu_size': min_tabu_size,
+                'max_tabu_size': max_tabu_size,
+                'num_cities': len(cities),
+                'coordinates': str(cities),
+                'execution_time': end_time - start_time,
+                'memory_used': memory_usage,
+                'best_route': str(best_route),
+                'best_distance': best_distance
+            }])
+            # Concatenate the new row DataFrame with the existing DataFrame
+            df = pd.concat([df, new_row], ignore_index=True)
+            # Plot the best route
+            route_plot(cities, best_route, max_iterations, max_tabu_size)
+
+df.to_csv(file, index=False)
