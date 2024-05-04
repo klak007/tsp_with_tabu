@@ -31,11 +31,11 @@ elif args.known:
 else:
     raise ValueError('Either --random or --known must be specified')
 #num_cities_list = [10, 20, 50]  # Number of cities to test [5, 10, 15, 20, 30, 50]
-max_iterations_list = [10, 100, 500, 1000, 3000]  # Number of iterations to test [5, 10, 50, 100, 200, 500, 1000, 5000]
-# tabu_size_list = [20, 50, 100]  # Tabu size to test [10, 20, 40, 50, 80, 100, 200]
+max_iterations_list = [10, 100, 1000]  # Number of iterations to test [5, 10, 50, 100, 200, 500, 1000, 5000]
+#tabu_size_list = [20, 50, 100]  # Tabu size to test [10, 20, 40, 50, 80, 100, 200]
 
 
-file = 'TSPdata6.csv'
+file = 'TSPdata5.csv'
 if os.path.exists(file):
     df = pd.read_csv(file)
 else:
@@ -44,8 +44,8 @@ else:
                  'execution_time', 'memory_used', 'best_route', 'best_distance'])
 
 # Loop through the parameters
-min_tabu_size_list = [10, 20, 30, 50, 100]  # Minimum tabu size to test
-max_tabu_size_list = [50, 100, 150, 200, 300]  # Maximum tabu size to test
+min_tabu_size_list = [10, 20, 30]  # Minimum tabu size to test
+max_tabu_size_list = [50, 100, 150]  # Maximum tabu size to test
 
 # Loop through the parameters
 for min_tabu_size in min_tabu_size_list:
